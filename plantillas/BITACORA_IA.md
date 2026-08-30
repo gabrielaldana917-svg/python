@@ -1,6 +1,6 @@
 # Bitácora de uso de IA
 
-**Grupo:** <número> · **Integrantes:** <nombre 1>, <nombre 2>, <nombre 3>
+**Grupo:** <número> · **Integrantes:** <Gabriel Felipe Aldana Vargas>, <Natalia Carrero Salinas>, <Harold Yesid Fúneme Mateus>
 **Herramientas usadas:** <p. ej. ChatGPT 5, Claude, Copilot>
 
 > Las tres secciones son obligatorias. **`## Rechazado` es la que se califica.**
