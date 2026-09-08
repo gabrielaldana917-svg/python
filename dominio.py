@@ -8,14 +8,31 @@ from utilidades import con_registro
 BASE = Path(__file__).parent
 
 
+class RepositorioEvaluaciones:
+    """Guarda las evaluaciones registradas, compartido entre instancias de EvaluadorRiesgo."""
+
+    def __init__(self):
+        self._evaluaciones = []
+
+    def registrar(self, evaluacion):
+        self._evaluaciones.append(evaluacion)
+
+    def todas(self):
+        return list(self._evaluaciones)
+
+
+repositorio_global = RepositorioEvaluaciones()
+
+
 class EvaluadorRiesgo:
     """Evalúa el riesgo de una póliza y guarda lo que ha evaluado."""
 
-    historial = []
     umbral = config.UMBRAL_ALTO_RIESGO
 
-    def __init__(self, poliza):
+    def __init__(self, poliza, repositorio=None):
         self.poliza = poliza
+        self.historial = []
+        self.repositorio = repositorio if repositorio is not None else repositorio_global
 
     @con_registro
     def puntuar(self, modelo, payload):
@@ -27,7 +44,9 @@ class EvaluadorRiesgo:
         return float(modelo.predict_proba(rasgos)[0][1])
 
     def anotar(self, puntaje):
-        self.historial.append({"poliza": self.poliza, "puntaje": puntaje})
+        evaluacion = {"poliza": self.poliza, "puntaje": puntaje}
+        self.historial.append(evaluacion)
+        self.repositorio.registrar(evaluacion)
 
     def es_alto_riesgo(self, puntaje):
         return puntaje is not None and puntaje > self.umbral

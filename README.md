@@ -50,3 +50,17 @@ curl -X POST localhost:8000/score \
 
 - La clave de la API está en `config.py` para que el equipo pueda probar sin configurar nada.
 - El histórico se exporta con `pickle`, que conserva los tipos de Python tal cual.
+
+## Arranque
+
+### Desarrollo
+\`\`\`
+uvicorn main:app --reload
+\`\`\`
+
+### Producción
+\`\`\`
+uvicorn main:app --workers 4
+\`\`\`
+Sin `--reload`: la recarga en caliente no es apta para producción porque reinicia el proceso worker
+ante cualquier cambio de archivo, lo cual es inaceptable bajo carga real.
